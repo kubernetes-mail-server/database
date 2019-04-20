@@ -1,0 +1,69 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  serviceName: {{ .Values.name }}
+  replicas: 1
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+        namespace: {{ .Values.namespace }}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.database.size }}
+        selector:
+          matchLabels:
+            volume-name: {{ .Values.namespace }}-{{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.namespace }}
+        role: {{ .Values.name }}
+    spec:
+      nodeSelector:
+        mailserver: "true"
+      containers:
+        - name: {{ .Values.name }}
+          image: mariadb:latest
+          imagePullPolicy: Always
+          env:
+            - name: "MYSQL_HOSTNAME"
+              value: "{{ .Values.name }}.{{ .Values.namespace }}"
+            - name: "MYSQL_PORT"
+              value: "{{ .Values.database.port }}"
+            - name: "MYSQL_USERNAME"
+              value: "{{ .Values.database.username }}"
+            - name: "MYSQL_PASSWORD"
+              value: "{{ .Values.database.password }}"
+            - name: "MYSQL_ROOT_PASSWORD"
+              value: "{{ .Values.database.root_password }}"
+            - name: "MYSQL_DATABASE"
+              value: {{ quote (coalesce .Values.database.name .Values.namespace | replace "-" "_") }}
+            - name: "MYSQL_ENCODING"
+              value: "{{ .Values.database.encoding }}"
+          volumeMounts:
+            - name: storage
+              mountPath: /var/lib/mysql
+          ports:
+          - name: {{ .Values.name }}
+            containerPort: {{ .Values.database.port }}
+            protocol: TCP
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: {{ .Values.namespace }}
+    role: {{ .Values.name }}
+  ports:
+  - name: {{ .Values.name }}
+    port: {{ .Values.database.port }}
+    targetPort: {{ .Values.database.port }}

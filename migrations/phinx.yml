@@ -1,0 +1,15 @@
+paths:
+    migrations: '%%PHINX_CONFIG_DIR%%'
+
+environments:
+    default_migration_table: schema_migrations
+    mail_server:
+        adapter: mysql
+        host: '%%PHINX_HOSTNAME%%'
+        port: '%%PHINX_PORT%%'
+        user: '%%PHINX_USERNAME%%'
+        pass: '%%PHINX_PASSWORD%%'
+        name: '%%PHINX_DATABASE%%'
+        charset: '%%PHINX_ENCODING%%'
+
+version_order: creation
