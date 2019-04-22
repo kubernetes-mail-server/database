@@ -13,10 +13,10 @@ class MysqlUsers extends AbstractMigration
 
         $database = getenv("PHINX_DATABASE");
 
-        $this->execute("CREATE USER IF NOT EXISTS '$readUsername'@'%' IDENTIFIED BY '$readPassword'}");
+        $this->execute("CREATE USER IF NOT EXISTS '$readUsername'@'%' IDENTIFIED BY '$readPassword'");
         $this->execute("GRANT SELECT ON $database.* TO '$readUsername'@'%");
 
-        $this->execute("CREATE USER IF NOT EXISTS '$writeUsername'@'%' IDENTIFIED BY '$writePassword'}");
+        $this->execute("CREATE USER IF NOT EXISTS '$writeUsername'@'%' IDENTIFIED BY '$writePassword'");
         $this->execute("GRANT SELECT ON $database.* TO '$writeUsername'@'%");
     }
 
