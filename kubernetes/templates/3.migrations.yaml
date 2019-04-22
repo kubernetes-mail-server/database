@@ -17,6 +17,8 @@ spec:
                 name: database-common
             - configMapRef:
                 name: database-root
+            - configMapRef:
+                name: admin-panel
           env:
             - name: "MYSQL_READ_USERNAME"
               valueFrom:
@@ -38,20 +40,3 @@ spec:
                 configMapKeyRef:
                   name: database-write
                   key: DATABASE_PASSWORD
-            - name: "ADMIN_USERNAME"
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: admin.admin_username
-            - name: "ADMIN_PASSWORD"
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: admin.admin_password
-            - name: "ADMIN_EMAIL"
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: admin.admin_email
-
-
