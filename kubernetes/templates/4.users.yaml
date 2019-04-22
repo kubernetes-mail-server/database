@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: users
+  namespace: {{ .Values.namespace }}
+data:
+  entrypoint.sh: |
+    #!/usr/bin/env sh
+    set -x
+    apk update && apk --no-cache add mysql-client
+
+    mysql -h ${MYSQL_HOSTNAME} -u root -p${MYSQL_ROOT_PASSWORD} -P ${MYSQL_PORT} <<EOSQL
+    CREATE USER IF NOT EXISTS '${MYSQL_READ_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_READ_PASSWORD}';
+    GRANT SELECT ON ${MYSQL_DATABASE}.* TO '${MYSQL_READ_USERNAME}'@'%';
+
+    CREATE USER IF NOT EXISTS '${MYSQL_WRITE_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_WRITE_PASSWORD}';
+    GRANT INSERT, UPDATE, SELECT, DELETE ON ${MYSQL_DATABASE}.* TO '${MYSQL_WRITE_USERNAME}'@'%';
+    EOSQL
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: users
+  namespace: {{ .Values.namespace }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      imagePullSecrets:
+        - name: {{ .Values.name }}
+      volumes:
+        - name: entrypoint
+          configMap:
+            name: users
+            defaultMode: 0744
+      containers:
+        - name: users
+          image: alpine:latest
+          command: ["/entrypoint.sh"]
+          volumeMounts:
+            - name: entrypoint
+              mountPath: /entrypoint.sh
+              subPath: entrypoint.sh
+          env:
+            - name: "MYSQL_HOSTNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.hostname
+            - name: "MYSQL_PORT"
+              value: "{{ .Values.database.port }}"
+            - name: "MYSQL_ROOT_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.root_password
+            - name: "MYSQL_READ_USERNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.read_username
+            - name: "MYSQL_READ_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.read_password
+            - name: "MYSQL_WRITE_USERNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.write_username
+            - name: "MYSQL_WRITE_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.write_password
+            - name: "MYSQL_DATABASE"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.name

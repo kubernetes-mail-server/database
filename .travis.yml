@@ -9,7 +9,6 @@ env:
   global:
     - NAME=database
     - IMAGE=kubernetesmailserver/${NAME}
-    - NAMESPACE=mail-server
     - REPLICAS=1
     - CACHE_FOLDER=$HOME/docker-images
     - CACHE_FILE=${CACHE_FOLDER}/${NAME}-${TRAVIS_COMMIT}.tgz
@@ -66,13 +65,12 @@ jobs:
         - export KUBECONFIG=$PWD/kubeconfig
         - kubectl get pods
         - echo "Deleting the migration job so it can execute a fresh run each deployment if necessary"
-        - kubectl -n ${NAMESPACE} delete job migrations || true
+        - kubectl delete job migrations || true
         - kubectl scale --replicas=0 statefulset/${NAME} || true
         - kubectl get statefulset
         - helm template
             -f $PWD/values.yaml
             --set name=${NAME}
-            --set namespace=${NAMESPACE}
             --set repository=${IMAGE}:${TRAVIS_BUILD_ID}
             $PWD/kubernetes | kubectl apply -f -
         - kubectl scale --replicas=${REPLICAS} statefulset/${NAME}

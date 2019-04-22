@@ -32,19 +32,30 @@ spec:
           imagePullPolicy: Always
           env:
             - name: "MYSQL_HOSTNAME"
-              value: "{{ .Values.name }}.{{ .Values.namespace }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.hostname
+            # we don't use the port from the global config map because then if you make a mistake,
+            # this software always has the port it's configured to use, not the one which might
+            # be missing/screwed up
             - name: "MYSQL_PORT"
               value: "{{ .Values.database.port }}"
-            - name: "MYSQL_USERNAME"
-              value: "{{ .Values.database.username }}"
-            - name: "MYSQL_PASSWORD"
-              value: "{{ .Values.database.password }}"
             - name: "MYSQL_ROOT_PASSWORD"
-              value: "{{ .Values.database.root_password }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.root_password
             - name: "MYSQL_DATABASE"
-              value: {{ quote (coalesce .Values.database.name .Values.namespace | replace "-" "_") }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.name
             - name: "MYSQL_ENCODING"
-              value: "{{ .Values.database.encoding }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.encoding
           volumeMounts:
             - name: storage
               mountPath: /var/lib/mysql

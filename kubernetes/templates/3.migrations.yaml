@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrations
+  namespace: {{ .Values.namespace }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      imagePullSecrets:
+        - name: {{ .Values.name }}
+      containers:
+        - name: migrations
+          image: {{ .Values.repository }}
+          env:
+            - name: "PHINX_HOSTNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.hostname
+            - name: "PHINX_PORT"
+              value: "{{ .Values.database.port }}"
+            - name: "PHINX_USERNAME"
+              value: "root"
+            - name: "PHINX_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.root_password
+            - name: "PHINX_DATABASE"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.name
+            - name: "PHINX_ENCODING"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.encoding

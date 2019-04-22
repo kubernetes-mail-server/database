@@ -1,8 +1,4 @@
+namespace: mail-server
 database:
-  username: "postfix_admin"
-  password: "some_secure_admin_password"
-  root_password: "some_secure_root_password"
-  # name: "override the templated/automatic name with your custom database name if you want"
   port: "3306"
-  encoding: "utf8"
   size: "1Gi"
