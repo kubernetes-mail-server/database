@@ -40,23 +40,23 @@ spec:
             - name: "MYSQL_READ_USERNAME"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.read_username
+                  name: database-read
+                  key: DATABASE_USERNAME
             - name: "MYSQL_READ_PASSWORD"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.read_password
+                  name: database-read
+                  key: DATABASE_PASSWORD
             - name: "MYSQL_WRITE_USERNAME"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.write_username
+                  name: database-write
+                  key: DATABASE_USERNAME
             - name: "MYSQL_WRITE_PASSWORD"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.write_password
+                  name: database-write
+                  key: DATABASE_PASSWORD
             - name: "ADMIN_USERNAME"
               valueFrom:
                 configMapKeyRef:
