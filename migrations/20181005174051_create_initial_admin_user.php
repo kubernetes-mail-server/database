@@ -5,10 +5,14 @@ class CreateInitialAdminUser extends AbstractMigration
 {
     public function change()
     {
+        $adminUsername = getenv("ADMIN_USERNAME");
+        $adminEmail = getenv("ADMIN_EMAIL");
+        $adminPassword = getenv("ADMIN_PASSWORD");
+
         $user = [
-            "username" => "admin",
-            "email" => "postmaster@beersandbusiness.com",
-            "password" => password_hash("admin123", PASSWORD_BCRYPT),
+            "username" => $adminUsername,
+            "email" => $adminEmail,
+            "password" => password_hash($adminPassword, PASSWORD_BCRYPT),
             "is_expired" => 0,
             "is_deleted" => 0
         ];

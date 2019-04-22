@@ -37,3 +37,40 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.namespace }}
                   key: database.encoding
+            - name: "MYSQL_READ_USERNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.read_username
+            - name: "MYSQL_READ_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.read_password
+            - name: "MYSQL_WRITE_USERNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.write_username
+            - name: "MYSQL_WRITE_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: database.write_password
+            - name: "ADMIN_USERNAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: admin.admin_username
+            - name: "ADMIN_PASSWORD"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: admin.admin_password
+            - name: "ADMIN_EMAIL"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.namespace }}
+                  key: admin.admin_email
+
+
