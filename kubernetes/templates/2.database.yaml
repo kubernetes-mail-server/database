@@ -34,8 +34,8 @@ spec:
             - name: "MYSQL_HOSTNAME"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.hostname
+                  name: database-common
+                  key: DATABASE_HOSTNAME
             # we don't use the port from the global config map because then if you make a mistake,
             # this software always has the port it's configured to use, not the one which might
             # be missing/screwed up
@@ -44,18 +44,18 @@ spec:
             - name: "MYSQL_ROOT_PASSWORD"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.root_password
+                  name: database-root
+                  key: DATABASE_PASSWORD
             - name: "MYSQL_DATABASE"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.name
+                  name: database-common
+                  key: DATABASE_NAME
             - name: "MYSQL_ENCODING"
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.namespace }}
-                  key: database.encoding
+                  name: database-common
+                  key: DATABASE_ENCODING
           volumeMounts:
             - name: storage
               mountPath: /var/lib/mysql
