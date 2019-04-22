@@ -65,6 +65,8 @@ jobs:
       script:
         - export KUBECONFIG=$PWD/kubeconfig
         - kubectl get pods
+        - echo "Deleting the migration job so it can execute a fresh run each deployment if necessary"
+        - kubectl -n ${NAMESPACE} delete job migrations || true
         - kubectl scale --replicas=0 statefulset/${NAME} || true
         - kubectl get statefulset
         - helm template
