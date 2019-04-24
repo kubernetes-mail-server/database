@@ -72,8 +72,8 @@ jobs:
         - helm template
             --set name=${NAME}
             --set namespace=${NAMESPACE}
-            --set database_size=$(kubectl get configmap general -o=jsonpath="{.data.DATABASE_SIZE}")
-            --set port=$(kubectl get configmap database-common -o=jsonpath="{.data.DATABASE_PORT}")
+            --set database_size=$(kubectl get cm general -o=jsonpath="{.data.DATABASE_SIZE}")
+            --set port=$(kubectl get cm database-common -o=jsonpath="{.data.DATABASE_PORT}")
             --set repository=${IMAGE}:${TRAVIS_BUILD_ID}
             $PWD/kubernetes | kubectl apply -f -
         - kubectl scale --replicas=${REPLICAS} statefulset/${NAME}
