@@ -9,6 +9,7 @@ env:
   global:
     - NAME=database
     - IMAGE=kubernetesmailserver/${NAME}
+    - NAMESPACE=mail-server
     - REPLICAS=1
     - CACHE_FOLDER=$HOME/docker-images
     - CACHE_FILE=${CACHE_FOLDER}/${NAME}-${TRAVIS_COMMIT}.tgz
@@ -71,6 +72,8 @@ jobs:
         - helm template
             -f $PWD/values.yaml
             --set name=${NAME}
+            --set namespace=${NAMESPACE}
+            --set port=$(kubectl get configmap connection-map -o=jsonpath="{.data.DATABASE_PORT}")
             --set repository=${IMAGE}:${TRAVIS_BUILD_ID}
             $PWD/kubernetes | kubectl apply -f -
         - kubectl scale --replicas=${REPLICAS} statefulset/${NAME}

@@ -14,7 +14,7 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: {{ .Values.database.size }}
+            storage: {{ .Values.database_size }}
         selector:
           matchLabels:
             volume-name: {{ .Values.namespace }}-{{ .Values.name }}
@@ -36,11 +36,11 @@ spec:
                 configMapKeyRef:
                   name: database-common
                   key: DATABASE_HOSTNAME
-            # we don't use the port from the global config map because then if you make a mistake,
-            # this software always has the port it's configured to use, not the one which might
-            # be missing/screwed up
             - name: "MYSQL_PORT"
-              value: "{{ .Values.database.port }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: database-common
+                  key: DATABASE_PORT
             - name: "MYSQL_ROOT_PASSWORD"
               valueFrom:
                 configMapKeyRef:
@@ -61,7 +61,7 @@ spec:
               mountPath: /var/lib/mysql
           ports:
           - name: {{ .Values.name }}
-            containerPort: {{ .Values.database.port }}
+            containerPort: {{ .Values.port }}
             protocol: TCP
 ---
 
@@ -76,5 +76,5 @@ spec:
     role: {{ .Values.name }}
   ports:
   - name: {{ .Values.name }}
-    port: {{ .Values.database.port }}
-    targetPort: {{ .Values.database.port }}
+    port: {{ .Values.port }}
+    targetPort: {{ .Values.port }}

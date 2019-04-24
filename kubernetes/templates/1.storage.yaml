@@ -10,7 +10,7 @@ metadata:
 spec:
   accessModes: [ "ReadWriteOnce" ]
   capacity:
-    storage: "{{ .Values.database.size }}"
+    storage: "{{ .Values.database_size }}"
   hostPath:
     # paths should also be prefixed, because it's a "shared namespace"
     path: /mnt/kubernetes/{{ .Values.namespace }}-{{ .Values.name }}
