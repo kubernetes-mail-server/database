@@ -13,3 +13,4 @@ class VirtualAliases extends AbstractMigration
             ->save();
     }
 }
+
