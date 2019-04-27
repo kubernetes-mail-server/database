@@ -9,7 +9,13 @@ class SimplifyAliases extends AbstractMigration
 		$table
 			->dropForeignKey("user_id")
 			->removeColumn("user_id")
+            ->save();
+
+		$table
             ->renameColumn("email", "src_email")
+            ->save();
+
+		$table
 			->changeColumn("src_email", "string", ["limit" => 255, "null" => false])
 			->addColumn("dst_email", "string", ["limit" => 255, "null" => false])
 			->save();
