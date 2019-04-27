@@ -15,6 +15,6 @@ class SimplifyAliases extends AbstractMigration
 		$table
             ->changeColumn("src_email", "string", ["limit" => 255, "null" => false])
             ->addColumn("dst_email", "string", ["limit" => 255, "null" => false])
-            ->save()
+            ->save();
 	}
 }
