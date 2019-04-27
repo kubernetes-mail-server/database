@@ -5,7 +5,7 @@ for e in $(env | grep ^DATABASE_); do
 done
 
 # patch up the mismatch of naming conventions
-PHINX_DATABASE=${DATABASE_NAME}
+export -p PHINX_DATABASE=${DATABASE_NAME}
 
 [ -z "${PHINX_HOSTNAME}" ] && echo "PHINX_HOSTNAME was not configured" && exit 0
 [ -z "${PHINX_DATABASE}" ] && echo "PHINX_DATABASE was not configured" && exit 0
