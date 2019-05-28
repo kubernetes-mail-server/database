@@ -30,6 +30,16 @@ spec:
         - name: {{ .Values.name }}
           image: mariadb:latest
           imagePullPolicy: Always
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 60
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 60
           env:
             - name: "MYSQL_HOSTNAME"
               valueFrom:
