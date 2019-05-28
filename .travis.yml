@@ -17,7 +17,7 @@ env:
     - secure: "J9TBnUS72EAWCBRt+T2VbEKoa703osfrkpLzkfJK87hLpk8lX0zNQmX4/m6fdCrh/mGJBj4DBt+ysteoBsDBQoXDqW+ZKsS94SulS8k2MPszxWsFaHxUbrw54An7aPAjI/lHqoD3xmYeDClfs9IYa/PW+DpCbRKL1gbZPC+izkda1ym5M5KBOQjNrSSJaxlCLLX2E4r8x07Z/cIVVnI7DqeIFZsquE/bM6TezZhXOn/pgsNMdLrizkqF3bVsDNdSz9cwl4eeToBcN7i8UdD2hdlJG7EUbmAQc8yzAU1J7OgVnDBxCbE7+WNhVMJe8+EhLyGWQdoB8ngA3PCm/cEbUjLFcyMA/FhXk0n2gjDMuJ5C2jaYPg/nDIhDW1V0a+JGHpm39ak2dI+lAAf8LlLvEhEWG80y6FWf12h6qxPBmG0xQpjZSbBlyXkortGZkp1ogWKCAbYY7JD0OlCW7WOOSIASEEwozgJ0gHvMxtE0nvaael4DByXnDFlBsRTaqPLRawe4gSYsbOZeKZreZ4KY0Swxm8uwsEJFzVPYNoQ0h2l7c72eD9gJ2qus0FOvTz8k40a1pfOUMkewC2Q1oKp2tEmGxp1CLQ7tcemGCb8hN61vJCdn4NOOGgxMZHR6qof9ipgOyOiliNs5poYX8gLSSKF3GiKhoS953xNfzV4WuXc="
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_433cf176543e_key -iv $encrypted_433cf176543e_iv -in kubeconfig.enc -out kubeconfig -d
+  - openssl aes-256-cbc -K $encrypted_6b862d55e124_key -iv $encrypted_6b862d55e124_iv -in kubeconfig.enc -out kubeconfig -d
   - KUBE_LATEST_VERSION="v1.14.1"
   - HELM_LATEST_VERSION="v2.13.1"
   - HELM=https://storage.googleapis.com/kubernetes-helm/helm-${HELM_LATEST_VERSION}-linux-amd64.tar.gz
