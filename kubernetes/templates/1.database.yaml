@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Values.name }}
@@ -28,7 +28,7 @@ spec:
         mail-server: "true"
       containers:
         - name: {{ .Values.name }}
-          image: mariadb:latest
+          image: mariadb:10.4
           imagePullPolicy: Always
           readinessProbe:
             tcpSocket:
