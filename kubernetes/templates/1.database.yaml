@@ -32,7 +32,7 @@ spec:
         mail-server: "true"
       containers:
         - name: {{ .Values.name }}
-          image: mariadb:10.4
+          image: mariadb:10.5.4
           imagePullPolicy: Always
           readinessProbe:
             tcpSocket:
