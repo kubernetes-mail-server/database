@@ -49,6 +49,8 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 60
           env:
+            - name: "MARIADB_SKIP_TLS"
+              value: "1"
             - name: "MYSQL_HOSTNAME"
               valueFrom:
                 configMapKeyRef:
