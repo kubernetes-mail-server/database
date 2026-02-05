@@ -1,3 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: disable-ssh
+data:
+  disable-ssl.cnf: |
+    [client]
+    ssl-mode=DISABLED
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -79,10 +89,17 @@ spec:
           volumeMounts:
             - name: storage
               mountPath: /var/lib/mysql
+            - name: disable-ssh
+              mountPath: /etc/mysql/conf.d/disable-ssl.cnf
+              subPath: disable-ssl.cnf
           ports:
           - name: {{ .Values.name }}
             containerPort: {{ .Values.port }}
             protocol: TCP
+      volumes:
+        - name: disable-ssh
+          configMap:
+            name: disable-ssh
 ---
 
 apiVersion: v1
