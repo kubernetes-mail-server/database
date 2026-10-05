@@ -1,4 +1,4 @@
-FROM php:fpm-alpine
+FROM php:8.5-fpm-alpine3.23
 
 # install all the required software for the container to run correctly
 RUN apk --no-cache add mysql-client
@@ -8,7 +8,7 @@ RUN docker-php-ext-install pdo_mysql
 ADD . /www
 WORKDIR /www
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN composer install \
